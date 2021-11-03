@@ -1,5 +1,5 @@
 import pygame
-from data import list_id_create_planet, createUserPlanete, setUp, reset, createSourisPlanete
+from data import list_id_create_planet, createUserPlanete, setUp, createSourisPlanete
 from model import screen, screenW, screenH, current_distance_pixel
 from display import (display_create_menu, display_modification_menu,
                     input_boxes, create_input_boxes,COLOR_ACTIVE,

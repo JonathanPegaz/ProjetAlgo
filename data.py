@@ -20,7 +20,7 @@ def createSourisPlanete(current_distance_pixel, x, y, massSouris):
     x -= screenW/2
     y = screenH/2 - y
     img = pygame.image.load('./ressources/souris.png')
-    souris = CelestialBody('souris', current_distance_pixel, mass,5, 0, 0, x*current_distance_pixel, y*current_distance_pixel, img)
+    souris = CelestialBody('souris', True, current_distance_pixel, mass,5, 0, 0, x*current_distance_pixel, y*current_distance_pixel, img)
     return souris
 
 def createUserPlanete(create_input_boxes, x, y, create_planete_img, current_distance_pixel):
@@ -47,8 +47,21 @@ def createUserPlanete(create_input_boxes, x, y, create_planete_img, current_dist
         velocity.x = vitesse
     x -= screenW/2
     y = screenH/2 - y
-    params = [name, current_distance_pixel, mass, 5, velocity.x, velocity.y, x*current_distance_pixel, y*current_distance_pixel, create_planete_img]
+    params = [name, True, current_distance_pixel, mass, 5, velocity.x, velocity.y, x*current_distance_pixel, y*current_distance_pixel, create_planete_img]
     id = random.randint(1,1000000)
+    return createObj(id, CelestialBody, params)
+
+def createMoons(moon, planete_speed, planet_distance, planete_revolution):
+    response_moon = requests.get(moon['rel'])
+    m = response_moon.json()
+    img = pygame.image.load('./ressources/moon.png')
+    id = random.randint(1000000,10000000)
+    perimetre_revolution =  2 * math.pi * (m["semimajorAxis"])
+    temps_revolution = m["sideralOrbit"] * 24 
+    vitesse = (perimetre_revolution/temps_revolution)*1000 #metre/h
+    vitesse = vitesse / (60*60) #metre/sec
+    print(m["id"] + " ", vitesse)
+    params = [m["id"], m["isPlanet"], DISTANCE_PIXEL_DEFAUT, m["mass"]["massValue"] * math.pow(10, m["mass"]["massExponent"]), m["meanRadius"]*2*1000, planete_speed, 0, 0, (m["semimajorAxis"]+planet_distance)*1000, img]
     return createObj(id, CelestialBody, params)
 
 def setUp():
@@ -56,7 +69,7 @@ def setUp():
     response_sun = requests.get('https://api.le-systeme-solaire.net/rest/bodies/soleil')
     s = response_sun.json()
     img = pygame.image.load('./ressources/'+s["id"]+'.png')
-    params=[s["id"], DISTANCE_PIXEL_DEFAUT, s["mass"]["massValue"] * math.pow(10, s["mass"]["massExponent"]), s["meanRadius"]*2*1000, 0, 0, 0, 0, img]
+    params=[s["id"], True, DISTANCE_PIXEL_DEFAUT, s["mass"]["massValue"] * math.pow(10, s["mass"]["massExponent"]), s["meanRadius"]*2*1000, 0, 0, 0, 0, img]
     list_obj.append(createObj(s["id"], CelestialBody, params))
 
     response_planets = requests.get('https://api.le-systeme-solaire.net/rest/bodies/', params=params_planets)
@@ -68,14 +81,12 @@ def setUp():
         vitesse = (perimetre_revolution/temps_revolution)*1000 #metre/h
         vitesse = vitesse / (60*60) #metre/sec
         img = pygame.image.load('./ressources/'+p["id"]+'.png')
-        params=[p["id"], DISTANCE_PIXEL_DEFAUT, p["mass"]["massValue"] * math.pow(10, p["mass"]["massExponent"]), p["meanRadius"]*2*1000, vitesse, 0, 0, p["semimajorAxis"]*1000, img]
+        params=[p["id"], p["isPlanet"], DISTANCE_PIXEL_DEFAUT, p["mass"]["massValue"] * math.pow(10, p["mass"]["massExponent"]), p["meanRadius"]*2*1000, vitesse, 0, 0, p["semimajorAxis"]*1000, img]
         list_obj.append(createObj(p["id"], CelestialBody, params))
+        list_moons = p["moons"]
+        if list_moons:
+            list_moons = list_moons[0:1]
+            for m in list_moons:
+                list_obj.append(createMoons(m, vitesse, p["semimajorAxis"], temps_revolution))
     
     return list_obj
-
-
-def reset(list_celestial_bodies):
-    for bodies in list_celestial_bodies:
-        del bodies
-    list_celestial_bodies = []
-    setUp()
