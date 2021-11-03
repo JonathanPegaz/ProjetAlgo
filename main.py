@@ -94,6 +94,8 @@ while play:
     if(list_celestial_bodies):
      info_obj = list_celestial_bodies[0]
     current_distance_pixel = info_obj.distance_pixel
+    current_time_factor = info_obj.currentTimeFactor
+    current_timeSpeed =  info_obj.timeSpeed
     info_box = display_info(current_distance_pixel, info_obj.timeDescription)
     if(info_box):
         for box in info_box:
@@ -112,6 +114,8 @@ while play:
 
     # gestion planetes
     for bodies in list_celestial_bodies:
+        bodies.currentTimeFactor = current_time_factor
+        bodies.timeSpeed =  current_timeSpeed
         bodies.updateVelocity(list_celestial_bodies)
     for bodies in list_celestial_bodies:
         bodies.updatePosition()
