@@ -9,7 +9,7 @@ pygame.font.init()
 myfont = pygame.font.SysFont('Comic Sans MS', 15)
 
 class CelestialBody:
-    def __init__(self, id, isPlanet, dp, mass, radius, ivx, ivy, posx, posy, img):
+    def __init__(self, id, isPlanet, dp, mass, radius, ivx, ivy, posx, posy, img, central_planet = None):
         self.name = id
         self.isPlanet = isPlanet
         self.distance_pixel = dp
@@ -23,10 +23,10 @@ class CelestialBody:
         self.position = pygame.Vector2(posx, posy)
         self.img = img
         self.distance_soleil = posy
-        self.currentTimeFactor = 1
-        self.timeSpeed = 1
-        self.timeDescription = '1 mois/seconde'
-        self.moon2Doffset = 5 #pixel
+        self.currentTimeFactor = 3
+        self.timeSpeed = 3600
+        self.timeDescription = '1 jour/seconde'
+        self.central_planet = central_planet
 
     def updateVelocity(self, allBodies):
         """Newton's law of universal gravitation : F = G*((m1*m2)/r)"""
@@ -40,10 +40,7 @@ class CelestialBody:
 
     def updatePosition(self):
         self.position += self.currentVelocity * self.timeSpeed
-        if self.isPlanet == False:
-            self.position2D = pygame.Vector2(screenW/2 + self.position.x/self.distance_pixel, screenH/2 - self.position.y/self.distance_pixel)
-        else:
-            self.position2D = pygame.Vector2(screenW/2 + self.position.x/self.distance_pixel, screenH/2 - self.position.y/self.distance_pixel)
+        self.position2D = pygame.Vector2(screenW/2 + self.position.x/self.distance_pixel, screenH/2 - self.position.y/self.distance_pixel)
 
     def zoomUp(self):
         self.distance_pixel *= 1.1

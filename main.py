@@ -25,7 +25,9 @@ inCreation = False
 sourisDisplay = False
 souris = None
 isMousePlanete = False
-massSouris = '6e+25'
+massSouris = '6e+20'
+
+display_moon_name = True
 
 
 while play:
@@ -50,8 +52,9 @@ while play:
             x,y = event.pos
             if event.type == pygame.MOUSEBUTTONDOWN:
                 for bodies in list_celestial_bodies:
-                    if (bodies.position2D.x-bodies.radius2D)<x and (bodies.position2D.x+bodies.radius2D)>x and (bodies.position2D.y-bodies.radius2D)<y and (bodies.position2D.y+bodies.radius2D)>y:
-                        new_selected_bodie=bodies
+                    if bodies.isPlanet == display_moon_name:
+                        if (bodies.position2D.x-bodies.radius2D)<x and (bodies.position2D.x+bodies.radius2D)>x and (bodies.position2D.y-bodies.radius2D)<y and (bodies.position2D.y+bodies.radius2D)>y:
+                            new_selected_bodie=bodies
             if event.button == 2:
                 if isMousePlanete == False:
                     if souris == None:
@@ -87,8 +90,11 @@ while play:
                 sourisDisplay = False
                 actual_selected_bodie = None
                 new_selected_bodie = None
+            if event.key == pygame.K_m:
+                display_moon_name = not display_moon_name
 
     screen.fill((0,0,0))
+    clock.get_time()
     if(list_celestial_bodies == []):
         list_celestial_bodies = setUp()
     if(list_celestial_bodies):
@@ -120,7 +126,8 @@ while play:
     for bodies in list_celestial_bodies:
         bodies.updatePosition()
         if(bodies.radius2D >=1):
-            screen.blit(bodies.namesurface,(bodies.position2D.x, bodies.position2D.y))
+            if bodies.isPlanet == display_moon_name:
+                screen.blit(bodies.namesurface,(bodies.position2D.x, bodies.position2D.y))
             rect = bodies.getImage().get_rect()
             rect.center = bodies.position2D.x, bodies.position2D.y
             screen.blit(bodies.getImage(), rect)
@@ -158,5 +165,5 @@ while play:
             if create_box.rdmImage > 0:
                 create_planete_img = pygame.image.load('./ressources/'+list_id_create_planet[create_box.rdmImage]+'.png')
 
-    time_elapsed += clock.tick(60)
+    clock.tick(60)
     pygame.display.flip()

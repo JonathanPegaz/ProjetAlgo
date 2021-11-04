@@ -90,8 +90,9 @@ def display_info(current_distance, current_time):
     info_box_distance = InputBox('info', 10, 10, 1, 30, str(round(current_distance/DISTANCE_PIXEL_DEFAUT,1)), 'million km/pixel (molette souris haut/bas pour le zoom)')
     info_box_time = InputBox('info', 10, 40, 1, 30, str(current_time), '(F1(-)/F2(+) pour ajuster le temps)')
     info_box_reset = InputBox('info', 10, 70, 1, 30, 'Click sur planete: modification menu', '(F5 reset simulation)')
-    return [info_box_distance, info_box_time, info_box_reset]
+    info_box_name = InputBox('info', 10, 130, 1, 30, '("m" change les nom affichés et la sélection lunes/planètes)')
+    return [info_box_distance, info_box_time, info_box_reset, info_box_name]
 
 def display_souris_mass():
-    info_box_Souris = InputBox('input',10, 100, 550, 30, '6e+25', 'kg mass Souris (click molette & changez ici)', 'mass')
+    info_box_Souris = InputBox('input',10, 100, 550, 30, '6e+20', 'kg mass Souris (click molette & changez ici)', 'mass')
     return [info_box_Souris]
