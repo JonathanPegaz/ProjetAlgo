@@ -20,6 +20,7 @@ mouse = (0,0)
 time_elapsed = 1
 actual_selected_bodie = None
 new_selected_bodie = None
+bg_img = pygame.image.load('./ressources/bg.jpeg')
 create_planete_img = pygame.image.load('./ressources/'+list_id_create_planet[0]+'.png')
 inCreation = False
 sourisDisplay = False
@@ -94,7 +95,7 @@ while play:
                 display_moon_name = not display_moon_name
 
     screen.fill((0,0,0))
-    clock.get_time()
+    screen.blit(pygame.transform.scale(bg_img, (screenW,screenH)), (0,0))
     if(list_celestial_bodies == []):
         list_celestial_bodies = setUp()
     if(list_celestial_bodies):

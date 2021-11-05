@@ -79,7 +79,21 @@ class CelestialBody:
 
     def getImage(self):
         if self.isPlanet:
-            return pygame.transform.scale(self.img, (10,10))
+            if self.radius < 5000000:
+                self.radius2D = 6
+                return pygame.transform.scale(self.img, (self.radius2D,self.radius2D))
+            elif self.radius > 5000000 and self.radius < 10000000:
+                self.radius2D = 9
+                return pygame.transform.scale(self.img, (self.radius2D,self.radius2D))
+            elif self.radius > 10000000 and self.radius < 50000000:
+                self.radius2D = 12
+                return pygame.transform.scale(self.img, (self.radius2D,self.radius2D))
+            elif  self.radius > 50000000 and self.radius < 200000000:
+                self.radius2D = 18
+                return pygame.transform.scale(self.img, (self.radius2D,self.radius2D))
+            else:
+                self.radius2D = 30
+                return pygame.transform.scale(self.img, (self.radius2D,self.radius2D))
         else:
             return pygame.transform.scale(self.img, (2,2))
 
