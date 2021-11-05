@@ -9,11 +9,7 @@ from display import (display_create_menu, display_modification_menu,
 pygame.init()
 
 list_celestial_bodies = []
-
-
 screen.fill((0,0,0))
-
-
 play = True
 clock = pygame.time.Clock()
 mouse = (0,0)

@@ -80,11 +80,12 @@ def display_modification_menu(body, rectimg):
 
 def display_create_menu(rectimg):
     create_input_rdm_img = InputBox('rdmImage',10, screenH - rectimg.h - 35, 100, 30, 'random')
-    create_input_box_name = InputBox('input',rectimg.w + 20, screenH - 200, 250, 30, 'Damas Planet', 'name', 'name')
+    create_input_box_name = InputBox('input',rectimg.w + 20, screenH - 250, 250, 30, 'Damas Planet', 'name', 'name')
+    create_input_box_radius = InputBox('input',rectimg.w + 20, screenH - 200, 250, 30, '10500', 'km', 'radius')
     create_input_box_mass = InputBox('input',rectimg.w + 20, screenH - 150, 250, 30, '5.658e+23', 'kg', 'mass')
     create_input_box_vitesse = InputBox('input',rectimg.w + 20, screenH - 100, 250, 30, '25000',"m/s", 'vitesse')
     create_input_box_save = InputBox('save', rectimg.w + 20, screenH - 50, 250, 30, 'right click for create')
-    return [create_input_rdm_img, create_input_box_name, create_input_box_mass, create_input_box_vitesse, create_input_box_save]
+    return [create_input_rdm_img, create_input_box_name, create_input_box_radius, create_input_box_mass, create_input_box_vitesse, create_input_box_save]
 
 def display_info(current_distance, current_time):
     info_box_distance = InputBox('info', 10, 10, 1, 30, str(round(current_distance/DISTANCE_PIXEL_DEFAUT,1)), 'million km/pixel (molette souris haut/bas pour le zoom)')

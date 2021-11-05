@@ -29,6 +29,7 @@ def createUserPlanete(create_input_boxes, x, y, create_planete_img, current_dist
     name = ''
     mass = 1.000
     vitesse = 1.000
+    radius = 1
     for create_box in create_input_boxes:
         if create_box.boxfield == 'name':
             name = create_box.text
@@ -37,6 +38,8 @@ def createUserPlanete(create_input_boxes, x, y, create_planete_img, current_dist
             mass = ((float(value[0]))*(10**int(value[1])))
         if create_box.boxfield == 'vitesse':
             vitesse = float(create_box.text)
+        if create_box.boxfield == 'radius':
+            radius = float(create_box.text) * 1000
     if x > screenW/2 and y < screenH/2: #++
         velocity.x = vitesse
     elif x > screenW/2 and y > screenH/2: #+-
@@ -47,11 +50,11 @@ def createUserPlanete(create_input_boxes, x, y, create_planete_img, current_dist
         velocity.x = vitesse
     x -= screenW/2
     y = screenH/2 - y
-    params = [name, True, current_distance_pixel, mass, 5, velocity.x, velocity.y, x*current_distance_pixel, y*current_distance_pixel, create_planete_img]
+    params = [name, True, current_distance_pixel, mass, radius, velocity.x, velocity.y, x*current_distance_pixel, y*current_distance_pixel, create_planete_img]
     id = random.randint(1,1000000)
     return createObj(id, CelestialBody, params)
 
-def createMoons(moon, planete_speed, planet_distance, planete_revolution, central_planet):
+def createMoons(moon, planete_speed, planet_distance, central_planet):
     response_moon = requests.get(moon['rel'])
     m = response_moon.json()
     img = pygame.image.load('./ressources/moon.png')
@@ -86,6 +89,6 @@ def setUp():
         if list_moons:
             list_moons = list_moons[0:1]
             for m in list_moons:
-                list_obj.append(createMoons(m, vitesse, p["semimajorAxis"], temps_revolution, p["id"]))
+                list_obj.append(createMoons(m, vitesse, p["semimajorAxis"], p["id"]))
     
     return list_obj
