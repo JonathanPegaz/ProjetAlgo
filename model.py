@@ -29,7 +29,7 @@ class CelestialBody:
         self.central_planet = central_planet
 
     def updateVelocity(self, allBodies):
-        """Newton's law of universal gravitation : F = G*((m1*m2)/r)"""
+        """Newton's law of universal gravitation : F = G*((m1*m2)/r²)"""
         for otherBodies in allBodies:
             if(otherBodies!=self):
                 sqrDst = (otherBodies.position - self.position).magnitude()
